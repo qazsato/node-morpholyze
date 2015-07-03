@@ -99,6 +99,8 @@ var getFetchFunc = function (type, callback) {
 
 var fetchWebSiteFunc = function (url, callback) {
 	client.fetch(url, null, function (err, $, res) {
+		$("body").find("script").remove();
+		$("body").find("style").remove();
 		callback($("body").text());
 	});
 };
