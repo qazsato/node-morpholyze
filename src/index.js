@@ -14,6 +14,7 @@ var start = function () {
 			fetchFunc(input, function (descriptions) {
 				mecabFunc(descriptions, function (json) {
 					tableFunc(json);
+					fileFunc(json);
 				});
 			});
 		});
@@ -207,6 +208,28 @@ var tableFunc = function (json) {
 		console.log(table.toString());
 	};
 	createTable(convert(json));
+};
+
+var fileFunc = function (json) {
+	var csv = "名詞,頻出回数\n";
+	for (var key in json) {
+		csv += key + "," + json[key] + "\n";
+	}
+	var name = "result" + getYYYYMMDDHHMMSS(new Date()) + ".csv";
+	fs.appendFile(name, csv ,'utf8', function (err) {});
+	console.log("\"" + name + "\" is created!");
+};
+
+var getYYYYMMDDHHMMSS = function (date) {
+	function twoDigits(n) {
+		return (n < 10 ? '0' : '') + n;
+	}
+	return date.getFullYear() +
+				twoDigits(date.getMonth() + 1) +
+				twoDigits(date.getDate()) +
+				twoDigits(date.getHours()) +
+				twoDigits(date.getMinutes()) +
+				twoDigits(date.getSeconds());
 };
 
 start();	// 実行
