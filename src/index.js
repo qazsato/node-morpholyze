@@ -117,7 +117,7 @@ var fetchDescriptionFunc = function (word, callback) {
 
 	var getFetchFunc = function (param) {
 		return function (nextFetch) {
-			client.fetch(config.url, param, function (err, $, res) {
+			client.fetch(config.description.url, param, function (err, $, res) {
 				var $li = $('#ires li.g');
 				$li.each(function (index) {
 					var description = $(this).find('span.st').text();
@@ -128,7 +128,7 @@ var fetchDescriptionFunc = function (word, callback) {
 		};
 	};
 
-	for (var i = 0; i < config.maxPage; i++) {
+	for (var i = 0; i < config.description.maxPage; i++) {
 		var fetch = getFetchFunc({q: word, start: i * 10});
 		fetches.push(fetch);
 	}
@@ -140,18 +140,44 @@ var fetchDescriptionFunc = function (word, callback) {
 
 var mecabFunc = function (text, callback) {
 	var json = {};
-	mecab.parse(text, function(err, result) {
-		if (err) { throw err; }
-		result.forEach(function(element){
-			if (element[1] == '名詞') {
-				var key = element[0].trim();
-				if (json[key]) {
-					json[key] = json[key] + 1;
-				} else {
-					json[key] = 1;
-				}
-			}
-		});
+	var mecabs = [];
+
+	var getMecabFunc = function (text) {
+		return function (nextMecab) {
+			mecab.parse(text, function(err, result) {
+				if (err) { throw err; }
+				result.forEach(function(element){
+					if (element[1] == '名詞') {
+						var key = element[0].trim();
+						if (json[key]) {
+							json[key] = json[key] + 1;
+						} else {
+							json[key] = 1;
+						}
+					}
+				});
+				nextMecab();
+			});
+		};
+	};
+
+	var split = function (text, size) {
+		var texts = [];
+		var maxSize = Math.ceil(text.length / size);
+		for (var i = 0; i < maxSize; i++) {
+			var min = size * i;
+			var max = size * (i + 1);
+			texts.push(text.substring(min, max));
+		}
+		return texts;
+	};
+
+	var texts = split(text, config.common.maxSize);
+	for (var i = 0; i < texts.length; i++) {
+		mecabs.push(getMecabFunc(texts[i]));
+	}
+
+	async.waterfall(mecabs, function() {
 		callback(json);
 	});
 };
