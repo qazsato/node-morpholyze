@@ -1,0 +1,16 @@
+{
+  "name": "Morpholyze",
+  "version": "1.0.0",
+  "description": "Morpholyze",
+  "author": "qaz-s",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^1.3.0",
+    "cheerio-httpcli": "^0.3.2",
+    "cli-table": "https://github.com/katoy/cli-table/tarball/kanjiWidth",
+    "config": "^1.14.0",
+    "fs": "0.0.2",
+    "inquirer": "^0.8.5",
+    "mecab-async": "^0.1.0"
+  }
+}
