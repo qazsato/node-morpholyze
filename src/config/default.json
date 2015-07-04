@@ -1,13 +1,13 @@
 {
-	"common": {
-		"maxSize": 10000
-	},
-	"website": {
-	},
-	"textfile": {
-	},
-	"description": {
-		"url" : "http://www.google.com/search",
-		"maxPage": 3
-	}
+  "common": {
+    "maxSize": 10000
+  },
+  "website": {
+  },
+  "textfile": {
+  },
+  "description": {
+    "url" : "http://www.google.com/search",
+    "maxPage": 3
+  }
 }
