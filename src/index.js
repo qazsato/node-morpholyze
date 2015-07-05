@@ -1,4 +1,5 @@
 var config   = require('config');          // 定義
+var asciify  = require('asciify');         // AA
 var inquirer = require("inquirer");        // 対話
 var client   = require('cheerio-httpcli'); // 通信
 var async    = require('async');           // 同期処理
@@ -8,16 +9,26 @@ var Table    = require('cli-table');       // テーブル
 var mecab    = new Mecab();
 
 var start = function () {
-  promptFunc(function (type) {
-    questionFunc(type, function (input) {
-      var fetchFunc = getFetchFunc(type);
-      fetchFunc(input, function (descriptions) {
-        mecabFunc(descriptions, function (json) {
-          tableFunc(json);
-          fileFunc(json);
+  asciiFunc(function () {
+    promptFunc(function (type) {
+      questionFunc(type, function (input) {
+        var fetchFunc = getFetchFunc(type);
+        fetchFunc(input, function (descriptions) {
+          mecabFunc(descriptions, function (json) {
+            tableFunc(json);
+            fileFunc(json);
+          });
         });
       });
     });
+  });
+};
+
+var asciiFunc = function (callback) {
+  asciify("Morphone", {font: "small"}, function(err, msg) {
+    if(err) return;
+    console.log(msg);
+    callback();
   });
 };
 
@@ -193,7 +204,7 @@ var tableFunc = function (json) {
       });
     }
     return array.sort(function(a,b){
-        return b.number - a.number;
+        return a.number - b.number;
     });
   };
 
