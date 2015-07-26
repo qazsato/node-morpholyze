@@ -25,7 +25,7 @@ var start = function () {
 };
 
 var asciiFunc = function (callback) {
-  asciify("Morphone", {font: "small"}, function(err, msg) {
+  asciify("KAISEKI", {font: "small"}, function(err, msg) {
     if(err) return;
     console.log(msg);
     callback();
