@@ -2,7 +2,7 @@
   "name": "Morphone",
   "version": "1.0.0",
   "description": "Morphone",
-  "author": "qaz-s",
+  "author": "qazsato",
   "license": "MIT",
   "dependencies": {
     "asciify": "^1.3.5",
